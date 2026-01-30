@@ -14,6 +14,7 @@
             --bio-color: #00ff88;
             --space-color: #bd00ff;
             --elec-color: #ffaa00;
+            --method-color: #ff3366;
             --gen-color: #ffffff;
             --current-glow: var(--chem-color);
         }
@@ -181,10 +182,10 @@
             <button onclick="showUnit('review')" id="btn-review" class="unit-btn active flex items-center gap-2 px-8 py-4 rounded-2xl font-black bg-white text-slate-600 shadow-md border border-slate-200 transition-all uppercase text-sm">
                 <i data-lucide="gamepad-2"></i> Exam Simulator
             </button>
-            <button onclick="showUnit('formulas')" id="btn-formulas" class="unit-btn flex items-center gap-2 px-8 py-4 rounded-2xl font-black bg-white text-slate-600 shadow-md border border-slate-200 transition-all uppercase text-sm">
+            <button onclick="showUnit('formulas')" id="btn-formulas" class="unit-btn flex items-center gap-2 px-6 py-4 rounded-2xl font-black bg-white text-slate-600 shadow-md border border-slate-200 transition-all uppercase text-sm">
                 <i data-lucide="triangle"></i> Triangles
             </button>
-            <button onclick="showUnit('visuals')" id="btn-visuals" class="unit-btn flex items-center gap-2 px-8 py-4 rounded-2xl font-black bg-white text-slate-600 shadow-md border border-slate-200 transition-all uppercase text-sm">
+            <button onclick="showUnit('visuals')" id="btn-visuals" class="unit-btn flex items-center gap-2 px-6 py-4 rounded-2xl font-black bg-white text-slate-600 shadow-md border border-slate-200 transition-all uppercase text-sm">
                 <i data-lucide="layers"></i> Diagrams
             </button>
         </div>
@@ -196,7 +197,7 @@
                 <!-- HUD -->
                 <div class="flex justify-between items-center mb-6 text-slate-400 font-bold text-sm">
                     <div class="flex items-center gap-2">
-                        <span id="question-count">Q: 1/12</span>
+                        <span id="question-count">Q: 1/25</span>
                     </div>
                     <div class="bg-black/30 px-4 py-1 rounded-full border border-white/10 text-white">
                         <span id="score-display">XP: 0</span>
@@ -326,26 +327,49 @@
             'Biology': { color: '#00ff88', icon: '🦠' },
             'Space': { color: '#bd00ff', icon: '🪐' },
             'Electricity': { color: '#ffaa00', icon: '⚡' },
+            'Method': { color: '#ff3366', icon: '🔬' },
             'General': { color: '#ffffff', icon: '📝' }
         };
 
-        // --- QUESTION BANK (Merged Exam + Variety) ---
+        // --- QUESTION BANK (Expanded from Review PDF & Exam) ---
         const scienceQuestions = [
-            // FROM EXAM IMAGE
-            { unit: "General", q: "Why must students follow lab instructions exactly as written?", options: ["Finish faster", "Avoid losing marks", "Reduce accident risk", "Impress teacher"], correct: "Reduce accident risk", explanation: "Safety is the #1 priority. Deviating causes accidents." },
-            { unit: "General", q: "What is the immediate step after completing a lab?", options: ["Leave immediately", "Dispose & Wash hands", "Remove goggles first", "Pour in sink"], correct: "Dispose & Wash hands", explanation: "Wash off chemical residues and dispose of waste correctly." },
-            { unit: "Chemistry", q: "Copper wire is malleable and ductile. These are:", options: ["Physical changes", "Chemical changes", "Physical properties", "Chemical properties"], correct: "Physical properties", explanation: "They describe the substance's state/ability without changing its identity." },
-            { unit: "Chemistry", q: "Mass = 360g, Volume = 45cm³. Density?", options: ["0.125 g/cm³", "8.0 g/cm³", "405 g/cm³", "16 g/cm³"], correct: "8.0 g/cm³", explanation: "D = M ÷ V. 360 ÷ 45 = 8.0." },
-            { unit: "Chemistry", q: "Example of a Chemical Change?", options: ["Ice melting", "Metal rusting", "Glass shattering", "Sugar dissolving"], correct: "Metal rusting", explanation: "Rust creates a NEW substance (Iron Oxide)." },
-            { unit: "Chemistry", q: "Dry ice turning Solid to Gas directly is:", options: ["Melting", "Boiling", "Sublimation", "Deposition"], correct: "Sublimation", explanation: "Direct jump from Solid to Gas skipping Liquid." },
-            { unit: "Chemistry", q: "Copper melts at 1084°C. At what temp does it freeze?", options: ["0°C", "100°C", "1084°C", "2560°C"], correct: "1084°C", explanation: "Melting and Freezing points are the same temperature." },
-            { unit: "Chemistry", q: "Two different elements combined chemically form a:", options: ["Atom", "Element", "Solution", "Compound"], correct: "Compound", explanation: "Compounds (like H2O) are chemically bonded elements." },
-            { unit: "Chemistry", q: "Which mixture is homogeneous?", options: ["Sugar water", "Cookie dough", "Pizza", "Salad dressing"], correct: "Sugar water", explanation: "Homogeneous means 'same throughout'. Dissolved sugar is invisible." },
+            // FROM EXAM PAPER STYLE
+            { unit: "General", q: "Why must students follow lab instructions exactly as written?", options: ["Finish faster", "Avoid losing marks", "Reduce accident risk", "Impress teacher"], correct: "Reduce accident risk", explanation: "Safety is priority #1. Unplanned reactions can be dangerous." },
+            { unit: "General", q: "What is the immediate step after completing a lab?", options: ["Leave immediately", "Dispose & Wash hands", "Remove goggles first", "Pour in sink"], correct: "Dispose & Wash hands", explanation: "Always clean up chemicals safely and wash hands to remove residues." },
             
-            // VARIETY FROM PREVIOUS TURNS
-            { unit: "Biology", q: "Relationship where both species benefit (+/+):", options: ["Commensalism", "Mutualism", "Parasitism", "Predation"], correct: "Mutualism", explanation: "Both parties gain an advantage (e.g., Bee & Flower)." },
-            { unit: "Space", q: "Which planets are Jovian (Gas Giants)?", options: ["Mercury & Venus", "Jupiter & Saturn", "Earth & Mars", "Pluto & Ceres"], correct: "Jupiter & Saturn", explanation: "Large, gaseous planets in the outer solar system." },
-            { unit: "Electricity", q: "V=12V, R=4Ω. Current (I)?", options: ["48 A", "3 A", "8 A", "16 A"], correct: "3 A", explanation: "I = V ÷ R. 12 ÷ 4 = 3." }
+            // SCIENTIFIC METHOD (From PDF)
+            { unit: "Method", q: "What is the correct format for a Hypothesis?", options: ["I think... because...", "If... Then...", "Question... Answer...", "Maybe... possibly..."], correct: "If... Then...", explanation: "A hypothesis relates a cause (If) to a predicted effect (Then)." },
+            { unit: "Method", q: "You notice your dog likes one treat more than another. This is:", options: ["Conclusion", "Hypothesis", "Observation", "Experiment"], correct: "Observation", explanation: "Noticing something with your senses is an Observation." },
+
+            // CHEMISTRY (From PDF)
+            { unit: "Chemistry", q: "Which property describes a metal's ability to be stretched into wire?", options: ["Malleability", "Ductility", "Viscosity", "Hardness"], correct: "Ductility", explanation: "Ductile = Stretch into wire. Malleable = Hammer into sheets." },
+            { unit: "Chemistry", q: "What describes particles in a SOLID?", options: ["Far apart, fast moving", "Close together, vibrating", "Sliding past each other", "Expanding freely"], correct: "Close together, vibrating", explanation: "Solids have fixed shapes because particles are packed tight and only vibrate." },
+            { unit: "Chemistry", q: "Dry Ice turning directly from Solid to Gas is:", options: ["Melting", "Sublimation", "Deposition", "Condensation"], correct: "Sublimation", explanation: "Sublimation skips the liquid phase (Solid -> Gas)." },
+            { unit: "Chemistry", q: "An atom has Atomic # 6 and Mass 12. How many neutrons?", options: ["6", "12", "18", "0"], correct: "6", explanation: "Neutrons = Mass (12) - Atomic Number (6) = 6." },
+            { unit: "Chemistry", q: "Which family of elements is unreactive (Group 18)?", options: ["Alkali Metals", "Halogens", "Noble Gases", "Transition Metals"], correct: "Noble Gases", explanation: "Noble gases have full valence shells, making them stable and unreactive." },
+            { unit: "Chemistry", q: "Rust forming on a car is a:", options: ["Physical Change", "Chemical Change", "State Change", "Physical Property"], correct: "Chemical Change", explanation: "Rust (Iron Oxide) is a new substance formed from Iron and Oxygen." },
+
+            // ECOLOGY (From PDF)
+            { unit: "Biology", q: "Which of these is an ABIOTIC factor?", options: ["Fungi", "Pine Tree", "Sunlight", "Wolf"], correct: "Sunlight", explanation: "Abiotic means non-living. Sunlight, water, and temperature are abiotic." },
+            { unit: "Biology", q: "What is the term for toxin buildup increasing UP the food chain?", options: ["Bioaccumulation", "Biomagnification", "Carrying Capacity", "Biodiversity"], correct: "Biomagnification", explanation: "Accumulation is in one organism; Magnification increases across trophic levels." },
+            { unit: "Biology", q: "In the Carbon Cycle, what process removes CO2 from the air?", options: ["Respiration", "Combustion", "Photosynthesis", "Decomposition"], correct: "Photosynthesis", explanation: "Plants take in CO2 to make food (glucose)." },
+            { unit: "Biology", q: "A bee gets nectar, the flower gets pollinated. This is:", options: ["Parasitism", "Commensalism", "Mutualism", "Competition"], correct: "Mutualism", explanation: "Both organisms benefit (+/+)." },
+
+            // SPACE (From PDF)
+            { unit: "Space", q: "Which planets are Jovian (Gas Giants)?", options: ["Earth & Mars", "Mercury & Venus", "Jupiter & Saturn", "Pluto & Ceres"], correct: "Jupiter & Saturn", explanation: "Jovian planets are large, gaseous, and in the outer solar system." },
+            { unit: "Space", q: "What causes Earth's seasons?", options: ["Distance from Sun", "Tilt of Earth's axis", "Solar Flares", "Moon's gravity"], correct: "Tilt of Earth's axis", explanation: "The tilt causes different hemispheres to receive direct sunlight at different times." },
+            { unit: "Space", q: "What process powers the Sun?", options: ["Burning Coal", "Nuclear Fission", "Nuclear Fusion", "Chemical Reaction"], correct: "Nuclear Fusion", explanation: "Hydrogen atoms fuse into Helium in the core, releasing massive energy." },
+            { unit: "Space", q: "A Solar Eclipse occurs when:", options: ["Earth blocks Sun", "Moon blocks Sun", "Sun blocks Moon", "Full Moon happens"], correct: "Moon blocks Sun", explanation: "The Moon passes between Earth and Sun, casting a shadow on Earth." },
+
+            // ELECTRICITY (From PDF)
+            { unit: "Electricity", q: "In a SERIES circuit, if one bulb burns out:", options: ["Others stay on", "All go out", "Others get brighter", "Battery explodes"], correct: "All go out", explanation: "Series circuits have only one path. If it breaks, flow stops everywhere." },
+            { unit: "Electricity", q: "What is the unit for Resistance?", options: ["Volts (V)", "Amps (A)", "Ohms (Ω)", "Joules (J)"], correct: "Ohms (Ω)", explanation: "Resistance is measured in Ohms." },
+            { unit: "Electricity", q: "Calculate Current if V=12V and R=4Ω.", options: ["48 A", "3 A", "8 A", "16 A"], correct: "3 A", explanation: "Ohm's Law: I = V / R. 12 / 4 = 3." },
+            
+            // MIXED REVIEW
+            { unit: "Chemistry", q: "Calculate Density: Mass=50g, Volume=10ml.", options: ["500 g/ml", "5 g/ml", "0.2 g/ml", "40 g/ml"], correct: "5 g/ml", explanation: "Density = Mass / Volume. 50 / 10 = 5." },
+            { unit: "Biology", q: "Animals that eat ONLY plants are:", options: ["Carnivores", "Omnivores", "Herbivores", "Producers"], correct: "Herbivores", explanation: "Herbivores consume producers (plants)." },
+            { unit: "General", q: "Which tool measures the volume of a liquid?", options: ["Scale", "Ruler", "Graduated Cylinder", "Thermometer"], correct: "Graduated Cylinder", explanation: "Graduated cylinders are designed for precise liquid volume measurement." }
         ];
 
         const moons = [

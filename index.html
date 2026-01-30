@@ -85,6 +85,7 @@
         /* Modals */
         .modal-overlay { transition: opacity 0.3s ease, visibility 0.3s ease; }
         .modal-overlay.show .modal-content { transform: translateY(0); }
+        .modal-overlay.show { opacity: 1; visibility: visible; } /* Critical Fix for visibility */
         .modal-content { transform: translateY(20px); transition: transform 0.3s ease; }
         .formula-triangle text { font-family: 'Inter', sans-serif; font-weight: 900; }
         
@@ -643,6 +644,35 @@
             });
         }
 
+        // --- UI LOGIC ---
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            if (modal.classList.contains('invisible')) {
+                modal.classList.remove('invisible', 'opacity-0');
+                modal.classList.add('show', 'opacity-100', 'visible');
+            } else {
+                modal.classList.add('invisible', 'opacity-0');
+                modal.classList.remove('show', 'opacity-100', 'visible');
+            }
+        }
+
+        function showUnit(id) {
+            document.querySelectorAll('.unit-section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`unit-${id}`).classList.remove('hidden');
+            document.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${id}`).classList.add('active');
+            lucide.createIcons();
+        }
+
+        function showCurrentHint() {
+            if (currentQ && currentQ.visualRef && VISUAL_ASSETS[currentQ.visualRef]) {
+                document.getElementById('hint-content').innerHTML = VISUAL_ASSETS[currentQ.visualRef];
+                toggleModal('hint-modal');
+                // Re-init icons inside modal
+                setTimeout(() => lucide.createIcons(), 100);
+            }
+        }
+
         window.onload = () => {
             // Inject Assets into Static Locations
             document.getElementById('ohm-triangle-container').innerHTML = VISUAL_ASSETS['ohm'];
@@ -654,8 +684,10 @@
             lucide.createIcons();
             document.addEventListener('keydown', (e) => {
                 if(e.key === 'Escape') {
-                    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('show', 'opacity-100', 'visible'));
-                    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.add('opacity-0', 'invisible'));
+                    document.querySelectorAll('.modal-overlay').forEach(m => {
+                        m.classList.remove('show', 'opacity-100', 'visible');
+                        m.classList.add('opacity-0', 'invisible');
+                    });
                 }
             });
         };

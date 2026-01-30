@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grade 9 Science Mastery Lab</title>
+    <title>Grade 9 Science Exam Master</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -87,6 +87,22 @@
         .modal-overlay.show .modal-content { transform: translateY(0); }
         .modal-content { transform: translateY(20px); transition: transform 0.3s ease; }
         .formula-triangle text { font-family: 'Inter', sans-serif; font-weight: 900; }
+        
+        /* Specific Visual Elements */
+        .periodic-table-mini {
+            display: grid;
+            grid-template-columns: repeat(18, 1fr);
+            gap: 2px;
+            font-size: 8px;
+            text-align: center;
+            width: 100%;
+            max-width: 300px;
+        }
+        .pt-cell { aspect-ratio: 1; border: 1px solid #555; display: flex; align-items: center; justify-content: center; }
+        .pt-metal { background: #3b82f6; color: white; }
+        .pt-nonmetal { background: #10b981; color: white; }
+        .pt-noble { background: #8b5cf6; color: white; }
+        .pt-meta { background: #f59e0b; color: white; }
     </style>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 pb-20">
@@ -120,7 +136,6 @@
                 <button onclick="toggleModal('cheat-sheet-modal')" class="p-2 hover:bg-indigo-100 rounded-full transition"><i data-lucide="x"></i></button>
             </div>
             <div class="p-8 overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 bg-white">
-                <!-- Content handled by Main Cheat Sheet HTML -->
                 <div class="space-y-3">
                     <h3 class="font-black text-indigo-600 border-b-2 border-indigo-100 pb-1 uppercase text-xs">Scientific Method</h3>
                     <div class="text-[13px] leading-relaxed">
@@ -132,22 +147,40 @@
                     </div>
                 </div>
                 <div class="space-y-3">
-                    <h3 class="font-black text-rose-600 border-b-2 border-rose-100 pb-1 uppercase text-xs">Chemistry</h3>
+                    <h3 class="font-black text-rose-600 border-b-2 border-rose-100 pb-1 uppercase text-xs">Chemistry Properties</h3>
                     <div class="text-[13px] leading-relaxed">
-                        <p><strong>Viscosity:</strong> Resistance to flow.</p>
-                        <p><strong>Malleability:</strong> Deform without breaking.</p>
-                        <p><strong>Ductility:</strong> Stretch into wire.</p>
-                        <p><strong>Pure:</strong> One element/molecule.</p>
+                        <p><strong>Viscosity:</strong> Resistance to flow (Thickness).</p>
+                        <p><strong>Malleability:</strong> Hammer into sheets (Aluminum foil).</p>
+                        <p><strong>Ductility:</strong> Stretch into wire (Copper).</p>
+                        <p><strong>Pure:</strong> One type of particle (Distilled Water).</p>
                     </div>
                 </div>
                 <div class="space-y-3">
-                    <h3 class="font-black text-sky-600 border-b-2 border-sky-100 pb-1 uppercase text-xs">Atoms</h3>
+                    <h3 class="font-black text-sky-600 border-b-2 border-sky-100 pb-1 uppercase text-xs">Atoms & Table</h3>
                     <div class="text-[13px] leading-relaxed">
-                        <p><strong>P = E = Atomic #</strong></p>
-                        <p><strong>N = Mass - Atomic #</strong></p>
+                        <p><strong>Protons (P):</strong> Atomic Number (Identity).</p>
+                        <p><strong>Electrons (E):</strong> Same as P in neutral atom.</p>
+                        <p><strong>Neutrons (N):</strong> Mass Number - Atomic Number.</p>
+                        <p><strong>Groups:</strong> 1 (Alkali), 17 (Halogen), 18 (Noble).</p>
                     </div>
                 </div>
-                <!-- ... other sections simplified for brevity in this view ... -->
+                <div class="space-y-3">
+                    <h3 class="font-black text-amber-600 border-b-2 border-amber-100 pb-1 uppercase text-xs">Space Systems</h3>
+                    <div class="text-[13px] leading-relaxed">
+                        <p><strong>Nuclear Fusion:</strong> Hydrogen to Helium (Sun's energy).</p>
+                        <p><strong>Terrestrial:</strong> Inner, Rocky (M, V, E, M).</p>
+                        <p><strong>Jovian:</strong> Outer, Gas Giants (J, S, U, N).</p>
+                        <p><strong>AU:</strong> Distance Earth to Sun.</p>
+                    </div>
+                </div>
+                <div class="space-y-3">
+                    <h3 class="font-black text-emerald-600 border-b-2 border-emerald-100 pb-1 uppercase text-xs">Ecology</h3>
+                    <div class="text-[13px] leading-relaxed">
+                        <p><strong>Biomagnification:</strong> Toxins increase up food chain.</p>
+                        <p><strong>Carrying Capacity:</strong> Max population supported.</p>
+                        <p><strong>Photosynthesis:</strong> CO2 + Sun -> Food + O2.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -182,7 +215,7 @@
                 <!-- HUD -->
                 <div class="flex justify-between items-center mb-6 text-slate-400 font-bold text-sm">
                     <div class="flex items-center gap-2">
-                        <span id="question-count">Q: 1/35</span>
+                        <span id="question-count">Q: 1/40</span>
                         <button onclick="showCurrentHint()" id="game-hint-btn" class="hidden bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full border border-yellow-500/50 hover:bg-yellow-500/40 transition flex items-center gap-1 text-xs uppercase font-black">
                             <i data-lucide="eye" class="w-3 h-3"></i> Show Hint
                         </button>
@@ -222,8 +255,8 @@
                         
                         <!-- Dynamic Visual Review Insert -->
                         <div id="feedback-visual" class="bg-slate-900/50 p-4 rounded-xl border border-white/10 mb-6 hidden">
-                            <p class="text-[10px] uppercase font-bold text-slate-400 mb-2 tracking-widest">Visual Review</p>
-                            <div id="feedback-visual-content" class="flex justify-center"></div>
+                            <p class="text-[10px] uppercase font-bold text-slate-400 mb-2 tracking-widest text-center">Reference Material</p>
+                            <div id="feedback-visual-content" class="flex justify-center mt-2"></div>
                         </div>
 
                         <button onclick="nextQuestion()" id="next-btn" class="w-full bg-white text-black py-4 rounded-xl font-black uppercase tracking-widest hover:bg-slate-200 hover:scale-[1.02] transition-all shadow-lg">Next Level &rarr;</button>
@@ -240,7 +273,7 @@
                 <div class="glass-card rounded-3xl p-10 shadow-xl border-t-8 border-yellow-400">
                     <h3 class="text-2xl font-black text-yellow-900 mb-6">OHM'S LAW</h3>
                     <div class="flex flex-col items-center">
-                        <div id="ohm-triangle-container"></div> <!-- Injected by JS -->
+                        <div id="ohm-triangle-container"></div>
                         <div class="grid grid-cols-3 gap-4 w-full mb-6">
                             <input type="number" id="ohm-v" class="border-2 border-yellow-100 rounded-xl p-3 text-center focus:border-yellow-400 outline-none font-bold" placeholder="V">
                             <input type="number" id="ohm-i" class="border-2 border-yellow-100 rounded-xl p-3 text-center focus:border-yellow-400 outline-none font-bold" placeholder="I">
@@ -254,7 +287,7 @@
                 <div class="glass-card rounded-3xl p-10 shadow-xl border-t-8 border-blue-400">
                     <h3 class="text-2xl font-black text-blue-900 mb-6">DENSITY SYSTEM</h3>
                     <div class="flex flex-col items-center">
-                        <div id="density-triangle-container"></div> <!-- Injected by JS -->
+                        <div id="density-triangle-container"></div>
                         <div class="grid grid-cols-3 gap-4 w-full mb-6">
                             <input type="number" id="den-m" class="border-2 border-blue-100 rounded-xl p-3 text-center focus:border-blue-400 outline-none font-bold" placeholder="M">
                             <input type="number" id="den-d" class="border-2 border-blue-100 rounded-xl p-3 text-center focus:border-blue-400 outline-none font-bold" placeholder="D">
@@ -272,7 +305,7 @@
             <div class="glass-card rounded-3xl p-10 shadow-xl text-center bg-white border-b-[12px] border-emerald-500">
                 <h2 class="text-3xl font-black mb-10 text-slate-800 uppercase tracking-tighter">Phase Change Mechanics</h2>
                 <div class="relative max-w-sm mx-auto aspect-square mb-12 flex items-center justify-center">
-                    <div id="states-diagram-container"></div> <!-- Injected by JS -->
+                    <div id="states-diagram-container"></div>
                 </div>
                 <div id="state-info" class="p-8 bg-slate-50 rounded-3xl border border-slate-200 text-slate-700 font-bold text-xl min-h-[100px] flex items-center justify-center">
                     Tap a state above (Liquid/Solid/Gas) to examine behavior!
@@ -289,6 +322,7 @@
 
     <script>
         // --- VISUAL ASSETS (SVG Strings) ---
+        // These are reused in the "Hint" modal AND the "Review" feedback
         const VISUAL_ASSETS = {
             'states': `
                 <div class="relative w-64 h-64">
@@ -314,6 +348,7 @@
                     <text x="25" y="70" text-anchor="middle" class="fill-yellow-800 text-[10px]">I</text>
                     <text x="75" y="70" text-anchor="middle" class="fill-yellow-800 text-[10px]">R</text>
                 </svg>
+                <p class="text-center text-xs text-yellow-300 mt-2">V = I × R</p>
             `,
             'density': `
                 <svg viewBox="0 0 100 87" class="w-48 h-48 drop-shadow-xl formula-triangle">
@@ -324,157 +359,148 @@
                     <text x="25" y="70" text-anchor="middle" class="fill-blue-800 text-[10px]">D</text>
                     <text x="75" y="70" text-anchor="middle" class="fill-blue-800 text-[10px]">V</text>
                 </svg>
+                <p class="text-center text-xs text-blue-300 mt-2">Density = Mass ÷ Volume</p>
             `,
             'atom': `
                 <div class="bg-sky-900 p-4 rounded-xl text-center border-2 border-sky-400 w-full max-w-[200px]">
                     <div class="text-4xl mb-2">⚛️</div>
                     <div class="text-sm font-bold text-sky-200 mb-2 border-b border-sky-700 pb-2">ATOMIC MATH</div>
                     <div class="text-white font-mono text-xs text-left space-y-2">
-                        <p><strong>P = E</strong><br><span class="text-sky-400">Protons = Electrons = Atomic #</span></p>
-                        <p><strong>N = M - A</strong><br><span class="text-sky-400">Neutrons = Mass - Atomic #</span></p>
+                        <p><strong>P = E</strong><br><span class="text-sky-400">Atomic # = Protons = Electrons</span></p>
+                        <p><strong>N = M - P</strong><br><span class="text-sky-400">Neutrons = Mass - Atomic #</span></p>
+                        <p class="border-t border-sky-700 pt-2"><strong>Shells:</strong> 2, 8, 8</p>
                     </div>
+                </div>
+            `,
+            'table': `
+                <div class="bg-slate-800 p-4 rounded-xl border border-slate-600 max-w-[280px]">
+                    <p class="text-center text-xs font-bold text-white mb-2">PERIODIC TABLE TRENDS</p>
+                    <div class="grid grid-cols-3 gap-1 text-[10px] text-white text-center font-bold">
+                        <div class="bg-blue-600 p-2 rounded h-20 flex flex-col justify-center">METALS<br>(Left/Center)<br>Reactive</div>
+                        <div class="bg-yellow-600 p-2 rounded h-20 flex flex-col justify-center">Staircase<br>(Metalloids)</div>
+                        <div class="bg-green-600 p-2 rounded h-20 flex flex-col justify-center">NON-METALS<br>(Right)</div>
+                    </div>
+                    <div class="mt-1 bg-purple-600 p-2 rounded text-[10px] text-white text-center font-bold">Group 18 (Far Right) = NOBLE GASES<br>(Full Shell = Unreactive)</div>
                 </div>
             `,
             'ecology': `
                 <div class="bg-emerald-900 p-4 rounded-xl border-2 border-emerald-400 w-full max-w-[250px]">
-                    <div class="text-sm font-bold text-emerald-200 mb-2 border-b border-emerald-700 pb-2 text-center">SYMBIOSIS CHEAT SHEET</div>
-                    <div class="grid grid-cols-3 gap-2 text-center text-xs font-bold text-white">
-                        <div class="bg-emerald-800 p-2 rounded">Mutualism<br><span class="text-emerald-300 text-lg">+/+</span><br>Both Win</div>
-                        <div class="bg-emerald-800 p-2 rounded">Commensal<br><span class="text-emerald-300 text-lg">+/0</span><br>One Wins</div>
-                        <div class="bg-emerald-800 p-2 rounded">Parasitism<br><span class="text-red-300 text-lg">+/-</span><br>One Hurt</div>
+                    <div class="text-sm font-bold text-emerald-200 mb-2 border-b border-emerald-700 pb-2 text-center">RELATIONSHIPS</div>
+                    <div class="grid grid-cols-3 gap-2 text-center text-xs font-bold text-white mb-4">
+                        <div class="bg-emerald-800 p-2 rounded">Mutual<br><span class="text-emerald-300 text-lg">+/+</span></div>
+                        <div class="bg-emerald-800 p-2 rounded">Commensal<br><span class="text-emerald-300 text-lg">+/0</span></div>
+                        <div class="bg-emerald-800 p-2 rounded">Parasite<br><span class="text-red-300 text-lg">+/-</span></div>
+                    </div>
+                    <div class="text-xs text-white bg-emerald-950 p-2 rounded text-center">
+                        <strong>Accumulation:</strong> 1 Organism<br>
+                        <strong>Magnification:</strong> Up the food chain
                     </div>
                 </div>
             `,
             'method': `
                 <div class="bg-rose-900 p-4 rounded-xl border-2 border-rose-400 w-full text-left text-xs text-white space-y-2 max-w-[220px]">
                     <div class="font-bold text-rose-200 border-b border-rose-700 pb-1 mb-1">SCIENTIFIC METHOD</div>
-                    <p>1. <strong>Observe</strong> (Notice it)</p>
+                    <p>1. <strong>Observe</strong> (Use senses)</p>
                     <p>2. <strong>Question</strong> (Ask why)</p>
-                    <p>3. <strong>Hypothesis</strong> (If... Then...)</p>
-                    <p>4. <strong>Experiment</strong> (Test it)</p>
-                    <p>5. <strong>Conclusion</strong> (Answer it)</p>
+                    <p>3. <strong>Hypothesis</strong> (If [IV]... Then [DV]...)</p>
+                    <p>4. <strong>Experiment</strong> (Test variables)</p>
+                    <p>5. <strong>Conclusion</strong> (Answer question)</p>
                 </div>
             `,
             'space': `
                 <div class="bg-indigo-900 p-4 rounded-xl border-2 border-indigo-400 w-full text-left text-xs text-white space-y-2 max-w-[250px]">
                     <div class="font-bold text-indigo-200 border-b border-indigo-700 pb-1 mb-1">SPACE CHEAT SHEET</div>
-                    <div class="flex gap-2">
-                        <div class="flex-1 bg-indigo-800 p-2 rounded"><strong class="block text-indigo-300">Terrestrial</strong>Solid, Rocky<br>(Earth, Mars)</div>
-                        <div class="flex-1 bg-indigo-800 p-2 rounded"><strong class="block text-indigo-300">Jovian</strong>Gas Giants<br>(Jupiter, Saturn)</div>
+                    <div class="flex gap-2 mb-2">
+                        <div class="flex-1 bg-indigo-800 p-2 rounded"><strong class="block text-indigo-300">Terrestrial</strong>Solid, Rocky<br>Small<br>(M, V, E, M)</div>
+                        <div class="flex-1 bg-indigo-800 p-2 rounded"><strong class="block text-indigo-300">Jovian</strong>Gas Giants<br>Large<br>(J, S, U, N)</div>
                     </div>
-                    <p><strong>Dwarf Planets:</strong> Too small to clear orbit (Pluto).</p>
+                    <p><strong>Sun:</strong> Nuclear Fusion (H &rarr; He)</p>
+                    <p><strong>Dwarf:</strong> Can't clear orbit (Pluto)</p>
                 </div>
             `,
             'circuit': `
                 <div class="bg-amber-900 p-4 rounded-xl border-2 border-amber-400 w-full text-left text-xs text-white space-y-2 max-w-[250px]">
-                    <div class="font-bold text-amber-200 border-b border-amber-700 pb-1 mb-1">CIRCUIT SYMBOLS</div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div class="bg-amber-800 p-1 rounded text-center">🔋 Battery</div>
-                        <div class="bg-amber-800 p-1 rounded text-center">💡 Load/Bulb</div>
-                        <div class="bg-amber-800 p-1 rounded text-center">〰️ Resistor</div>
-                        <div class="bg-amber-800 p-1 rounded text-center">_/_ Switch</div>
+                    <div class="font-bold text-amber-200 border-b border-amber-700 pb-1 mb-1">CIRCUIT RULES</div>
+                    <div class="flex gap-2 text-center mb-2">
+                        <div class="flex-1 bg-amber-800 p-2 rounded">
+                            <strong class="text-amber-300">SERIES</strong><br>1 Path<br>1 breaks = All off
+                        </div>
+                        <div class="flex-1 bg-amber-800 p-2 rounded">
+                            <strong class="text-amber-300">PARALLEL</strong><br>Multiple Paths<br>1 breaks = Others stay on
+                        </div>
                     </div>
-                    <p class="text-center mt-2 font-mono text-amber-300">Series = 1 Path<br>Parallel = 2+ Paths</p>
+                    <div class="grid grid-cols-2 gap-1 text-[9px] text-center">
+                        <div class="bg-black/30 p-1 rounded">Resistor: Slows Flow</div>
+                        <div class="bg-black/30 p-1 rounded">Switch: Controls Flow</div>
+                    </div>
                 </div>
             `
         };
 
         // --- CONFIG & THEMES ---
         const THEMES = {
-            'Chemistry': { color: '#00f2ff', icon: '🧪' },
-            'Biology': { color: '#00ff88', icon: '🦠' },
-            'Space': { color: '#bd00ff', icon: '🪐' },
-            'Electricity': { color: '#ffaa00', icon: '⚡' },
-            'Method': { color: '#ff3366', icon: '🔬' },
-            'General': { color: '#ffffff', icon: '📝' }
+            'Chemistry': { color: '#00f2ff', icon: 'flask-conical' },
+            'Biology': { color: '#00ff88', icon: 'microscope' },
+            'Space': { color: '#bd00ff', icon: 'rocket' },
+            'Electricity': { color: '#ffaa00', icon: 'zap' },
+            'Method': { color: '#ff3366', icon: 'clipboard-list' },
+            'General': { color: '#ffffff', icon: 'book-open' }
         };
 
-        // --- QUESTION BANK (Restored from Study Guide & Exam) ---
+        // --- QUESTION BANK (Updated from Copy of Science Review Test Prepare) ---
         const scienceQuestions = [
             // --- SCIENTIFIC METHOD ---
             { unit: "Method", q: "What is the correct format for a Hypothesis?", options: ["I think... because...", "If... Then...", "Question... Answer...", "Maybe... possibly..."], correct: "If... Then...", explanation: "A hypothesis links a cause (If) to a predicted effect (Then).", visualRef: 'method' },
             { unit: "Method", q: "You notice your dog likes one treat more than another. This is:", options: ["Conclusion", "Hypothesis", "Observation", "Experiment"], correct: "Observation", explanation: "Noticing something with your senses is an Observation.", visualRef: 'method' },
             { unit: "Method", q: "What is the final step where you answer your original question?", options: ["Hypothesis", "Research", "Conclusion", "Experiment"], correct: "Conclusion", explanation: "The conclusion states whether your hypothesis was supported based on the results.", visualRef: 'method' },
+            { unit: "Method", q: "Before forming a hypothesis, you should:", options: ["Draw a conclusion", "Do Research", "Start the experiment", "Publish results"], correct: "Do Research", explanation: "Research helps you make an educated guess (hypothesis).", visualRef: 'method' },
 
-            // --- CHEMISTRY (Matter, Density, Atoms) ---
-            { unit: "Chemistry", q: "Which property describes a metal's ability to be stretched into wire?", options: ["Malleability", "Ductility", "Viscosity", "Hardness"], correct: "Ductility", explanation: "Ductile = Stretch into wire. Malleable = Hammer into sheets.", visualRef: 'states' },
-            { unit: "Chemistry", q: "What describes particles in a SOLID?", options: ["Far apart, fast moving", "Close together, vibrating", "Sliding past each other", "Expanding freely"], correct: "Close together, vibrating", explanation: "Solids have fixed shapes because particles are packed tight and only vibrate.", visualRef: 'states' },
-            { unit: "Chemistry", q: "Dry Ice turning directly from Solid to Gas is:", options: ["Melting", "Sublimation", "Deposition", "Condensation"], correct: "Sublimation", explanation: "Sublimation skips the liquid phase (Solid -> Gas).", visualRef: 'states' },
-            { unit: "Chemistry", q: "Gas turning directly into a Solid is called:", options: ["Sublimation", "Deposition", "Freezing", "Condensation"], correct: "Deposition", explanation: "Deposition skips the liquid phase (Gas -> Solid).", visualRef: 'states' },
-            { unit: "Chemistry", q: "Calculate Density: Mass=50g, Volume=10ml.", options: ["500 g/ml", "5 g/ml", "0.2 g/ml", "40 g/ml"], correct: "5 g/ml", explanation: "Density = Mass / Volume. 50 / 10 = 5.", visualRef: 'density' },
-            { unit: "Chemistry", q: "A solid metal block has Mass 360g and Volume 45cm³. Density?", options: ["8.0 g/cm³", "0.125 g/cm³", "405 g/cm³", "16 g/cm³"], correct: "8.0 g/cm³", explanation: "Density = 360 / 45 = 8.", visualRef: 'density' },
-            { unit: "Chemistry", q: "An atom has Atomic # 6 and Mass 12. How many neutrons?", options: ["6", "12", "18", "0"], correct: "6", explanation: "Neutrons = Mass (12) - Atomic Number (6) = 6.", visualRef: 'atom' },
-            { unit: "Chemistry", q: "Which family of elements is unreactive (Group 18)?", options: ["Alkali Metals", "Halogens", "Noble Gases", "Transition Metals"], correct: "Noble Gases", explanation: "Noble gases have full valence shells, making them stable and unreactive.", visualRef: 'atom' },
-            { unit: "Chemistry", q: "Rust forming on a car is a:", options: ["Physical Change", "Chemical Change", "State Change", "Physical Property"], correct: "Chemical Change", explanation: "Rust (Iron Oxide) is a new substance formed from Iron and Oxygen.", visualRef: 'states' },
-            { unit: "Chemistry", q: "Which mixture is homogeneous?", options: ["Sugar dissolved in water", "Cookie dough", "Pizza", "Salad"], correct: "Sugar dissolved in water", explanation: "Homogeneous means 'same throughout'. Dissolved sugar is invisible.", visualRef: 'states' },
-            { unit: "Chemistry", q: "Viscosity describes a liquid's:", options: ["Resistance to flow", "Ability to freeze", "Transparency", "Taste"], correct: "Resistance to flow", explanation: "Honey has high viscosity (slow flow); water has low viscosity.", visualRef: 'states' },
+            // --- CHEMISTRY (States, Particles, Matter) ---
+            { unit: "Chemistry", q: "What is the Particle Theory of Matter?", options: ["Particles are still", "Particles are always moving", "Heat slows particles down", "Solids have no particles"], correct: "Particles are always moving", explanation: "Matter is made of particles that are in constant motion. Heat makes them move faster.", visualRef: 'states' },
+            { unit: "Chemistry", q: "Which state of matter has particles packed tightly and vibrating?", options: ["Gas", "Liquid", "Solid", "Plasma"], correct: "Solid", explanation: "Solids maintain their shape because particles are locked in place.", visualRef: 'states' },
+            { unit: "Chemistry", q: "Sublimation is the change from:", options: ["Solid to Gas", "Gas to Solid", "Liquid to Gas", "Solid to Liquid"], correct: "Solid to Gas", explanation: "It skips the liquid phase (e.g., Dry Ice).", visualRef: 'states' },
+            { unit: "Chemistry", q: "Gas turning directly into a Solid (like frost) is:", options: ["Sublimation", "Deposition", "Freezing", "Condensation"], correct: "Deposition", explanation: "Deposition is the opposite of sublimation.", visualRef: 'states' },
+            { unit: "Chemistry", q: "Viscosity measures a fluid's:", options: ["Transparency", "Resistance to flow", "Boiling point", "Density"], correct: "Resistance to flow", explanation: "High viscosity means thick and slow (Honey). Low viscosity means thin and fast (Water).", visualRef: 'states' },
+            { unit: "Chemistry", q: "Malleability is the ability to:", options: ["Be stretched into wire", "Be hammered into sheets", "Resist scratching", "Dissolve in water"], correct: "Be hammered into sheets", explanation: "Think of a 'mallet' (hammer). Aluminum is malleable.", visualRef: 'states' },
+            { unit: "Chemistry", q: "Ductility is the ability to:", options: ["Be hammered into sheets", "Be stretched into wire", "Conduct heat", "Break easily"], correct: "Be stretched into wire", explanation: "Copper is ductile because it can be made into wires.", visualRef: 'states' },
+            
+            // --- CHEMISTRY (Atoms & Table) ---
+            { unit: "Chemistry", q: "Which group on the Periodic Table is UNREACTIVE?", options: ["Alkali Metals", "Halogens", "Noble Gases", "Metalloids"], correct: "Noble Gases", explanation: "Group 18 (Far right). They have full valence shells, so they don't bond.", visualRef: 'table' },
+            { unit: "Chemistry", q: "Where are metals found on the Periodic Table?", options: ["Left side", "Right side", "Along the staircase", "Top row only"], correct: "Left side", explanation: "The majority of elements are metals, located on the left and center.", visualRef: 'table' },
+            { unit: "Chemistry", q: "An atom has Atomic #6 and Mass 12. How many Neutrons?", options: ["6", "12", "18", "0"], correct: "6", explanation: "Neutrons = Mass (12) - Atomic # (6) = 6.", visualRef: 'atom' },
+            { unit: "Chemistry", q: "In a neutral atom, the number of Protons equals:", options: ["Neutrons", "Electrons", "Mass Number", "Nucleus"], correct: "Electrons", explanation: "Positives (Protons) must equal Negatives (Electrons) for a charge of 0.", visualRef: 'atom' },
+            { unit: "Chemistry", q: "The maximum electrons in the first 3 shells are:", options: ["2, 8, 8", "2, 4, 6", "8, 8, 8", "2, 8, 18"], correct: "2, 8, 8", explanation: "Bohr-Rutherford rule: 2 in the first, 8 in the second, 8 in the third.", visualRef: 'atom' },
 
-            // --- ECOLOGY (Food Webs, Cycles, Interactions) ---
-            { unit: "Biology", q: "Which of these is an ABIOTIC factor?", options: ["Fungi", "Pine Tree", "Sunlight", "Wolf"], correct: "Sunlight", explanation: "Abiotic means non-living. Sunlight, water, and temperature are abiotic.", visualRef: 'ecology' },
-            { unit: "Biology", q: "What is the term for toxin buildup increasing UP the food chain?", options: ["Bioaccumulation", "Biomagnification", "Carrying Capacity", "Biodiversity"], correct: "Biomagnification", explanation: "Accumulation is in one organism; Magnification increases across trophic levels.", visualRef: 'ecology' },
-            { unit: "Biology", q: "In the Carbon Cycle, what process removes CO2 from the air?", options: ["Respiration", "Combustion", "Photosynthesis", "Decomposition"], correct: "Photosynthesis", explanation: "Plants take in CO2 to make food (glucose).", visualRef: 'ecology' },
-            { unit: "Biology", q: "A bee gets nectar, the flower gets pollinated. This is:", options: ["Parasitism", "Commensalism", "Mutualism", "Competition"], correct: "Mutualism", explanation: "Both organisms benefit (+/+).", visualRef: 'ecology' },
-            { unit: "Biology", q: "A mosquito sucking blood from a human is:", options: ["Mutualism", "Commensalism", "Parasitism", "Predation"], correct: "Parasitism", explanation: "One benefits (Mosquito) while the other is harmed (Human).", visualRef: 'ecology' },
-            { unit: "Biology", q: "Decomposers help the ecosystem by:", options: ["Eating plants", "Breaking down dead matter", "Hunting prey", "Making their own food"], correct: "Breaking down dead matter", explanation: "They recycle nutrients back into the soil for producers.", visualRef: 'ecology' },
-            { unit: "Biology", q: "The maximum population an environment can sustain is called:", options: ["Carrying Capacity", "Limiting Factor", "Bioaccumulation", "Community"], correct: "Carrying Capacity", explanation: "It's the limit of resources available to support a population.", visualRef: 'ecology' },
+            // --- CHEMISTRY (Calculations) ---
+            { unit: "Chemistry", q: "Mass = 360g, Volume = 45cm³. Density?", options: ["8.0 g/cm³", "0.125 g/cm³", "405 g/cm³", "315 g/cm³"], correct: "8.0 g/cm³", explanation: "Density = Mass / Volume. 360 / 45 = 8.", visualRef: 'density' },
+            { unit: "Chemistry", q: "If Density=2 g/ml and Volume=50 ml, what is Mass?", options: ["25 g", "100 g", "52 g", "48 g"], correct: "100 g", explanation: "Mass = Density × Volume. 2 × 50 = 100.", visualRef: 'density' },
 
-            // --- SPACE (Planets, Moon, Sun) ---
-            { unit: "Space", q: "Which planets are Jovian (Gas Giants)?", options: ["Earth & Mars", "Mercury & Venus", "Jupiter & Saturn", "Pluto & Ceres"], correct: "Jupiter & Saturn", explanation: "Jovian planets are large, gaseous, and in the outer solar system.", visualRef: 'space' },
-            { unit: "Space", q: "Which planets are Terrestrial (Rocky)?", options: ["Jupiter & Saturn", "Uranus & Neptune", "Earth & Mars", "Pluto & Eris"], correct: "Earth & Mars", explanation: "Terrestrial planets have solid, rocky surfaces.", visualRef: 'space' },
-            { unit: "Space", q: "What causes Earth's seasons?", options: ["Distance from Sun", "Tilt of Earth's axis", "Solar Flares", "Moon's gravity"], correct: "Tilt of Earth's axis", explanation: "The tilt causes different hemispheres to receive direct sunlight at different times.", visualRef: 'space' },
-            { unit: "Space", q: "What process powers the Sun?", options: ["Burning Coal", "Nuclear Fission", "Nuclear Fusion", "Chemical Reaction"], correct: "Nuclear Fusion", explanation: "Hydrogen atoms fuse into Helium in the core, releasing massive energy.", visualRef: 'space' },
-            { unit: "Space", q: "A Solar Eclipse occurs when:", options: ["Earth blocks Sun", "Moon blocks Sun", "Sun blocks Moon", "Full Moon happens"], correct: "Moon blocks Sun", explanation: "The Moon passes between Earth and Sun, casting a shadow on Earth.", visualRef: 'space' },
-            { unit: "Space", q: "A 'Waning' moon means the light is:", options: ["Growing", "Shrinking", "Full", "New"], correct: "Shrinking", explanation: "Waning = Light is decreasing. Waxing = Light is growing.", visualRef: 'space' },
-            { unit: "Space", q: "Asteroids are mostly found in the:", options: ["Kuiper Belt", "Asteroid Belt", "Oort Cloud", "Rings of Saturn"], correct: "Asteroid Belt", explanation: "Between Mars and Jupiter.", visualRef: 'space' },
+            // --- ECOLOGY ---
+            { unit: "Biology", q: "Abiotic factors are:", options: ["Living things", "Non-living things", "Dead organisms", "Plants"], correct: "Non-living things", explanation: "A-Bio means 'without life'. Examples: Sun, Water, Rock, Temp.", visualRef: 'ecology' },
+            { unit: "Biology", q: "Bioaccumulation is toxin buildup in:", options: ["One organism over time", "The entire food chain", "The soil only", "Water sources"], correct: "One organism over time", explanation: "Accumulation happens in ONE individual. Magnification happens up the chain.", visualRef: 'ecology' },
+            { unit: "Biology", q: "Biomagnification means the highest toxins are found in:", options: ["Producers", "Primary Consumers", "Top Predators", "Decomposers"], correct: "Top Predators", explanation: "Toxins concentrate at each step up the food chain.", visualRef: 'ecology' },
+            { unit: "Biology", q: "Photosynthesis removes what from the air?", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Glucose"], correct: "Carbon Dioxide", explanation: "Plants take CO2 + Water + Sun to make Food + Oxygen.", visualRef: 'ecology' },
+            { unit: "Biology", q: "Relationship: A bee pollinates a flower (+/+).", options: ["Parasitism", "Commensalism", "Mutualism", "Competition"], correct: "Mutualism", explanation: "Both the bee (food) and flower (reproduction) benefit.", visualRef: 'ecology' },
+            { unit: "Biology", q: "Carrying Capacity is:", options: ["Max population an area supports", "Minimum predators needed", "Growth rate of plants", "Amount of water available"], correct: "Max population an area supports", explanation: "The limit of resources determines the carrying capacity.", visualRef: 'ecology' },
 
-            // --- ELECTRICITY (Circuits, Ohm's Law) ---
-            { unit: "Electricity", q: "In a SERIES circuit, if one bulb burns out:", options: ["Others stay on", "All go out", "Others get brighter", "Battery explodes"], correct: "All go out", explanation: "Series circuits have only one path. If it breaks, flow stops everywhere.", visualRef: 'circuit' },
-            { unit: "Electricity", q: "In a PARALLEL circuit, if one path breaks:", options: ["All go out", "Others stay on", "Current stops", "Resistance doubles"], correct: "Others stay on", explanation: "Electricity can flow through the other available paths.", visualRef: 'circuit' },
-            { unit: "Electricity", q: "What is the unit for Resistance?", options: ["Volts (V)", "Amps (A)", "Ohms (Ω)", "Joules (J)"], correct: "Ohms (Ω)", explanation: "Resistance is measured in Ohms.", visualRef: 'ohm' },
-            { unit: "Electricity", q: "Calculate Current if V=12V and R=4Ω.", options: ["48 A", "3 A", "8 A", "16 A"], correct: "3 A", explanation: "Ohm's Law: I = V / R. 12 / 4 = 3.", visualRef: 'ohm' },
-            { unit: "Electricity", q: "What component restricts the flow of current?", options: ["Battery", "Switch", "Resistor", "Wire"], correct: "Resistor", explanation: "Resistors limit the flow of electrons.", visualRef: 'circuit' },
-            { unit: "Electricity", q: "Voltage is best described as:", options: ["Flow of electrons", "Electrical pressure", "Restriction of flow", "Power usage"], correct: "Electrical pressure", explanation: "Voltage is the 'push' or pressure moving the electrons.", visualRef: 'ohm' },
+            // --- SPACE ---
+            { unit: "Space", q: "Jovian Planets are:", options: ["Small & Rocky", "Large & Gaseous", "Close to Sun", "Made of Ice"], correct: "Large & Gaseous", explanation: "Jupiter, Saturn, Uranus, Neptune. They are Gas Giants.", visualRef: 'space' },
+            { unit: "Space", q: "Terrestrial Planets are:", options: ["Made of Gas", "Solid & Rocky", "Far from Sun", "Have rings"], correct: "Solid & Rocky", explanation: "Mercury, Venus, Earth, Mars. They have a hard surface.", visualRef: 'space' },
+            { unit: "Space", q: "Why is Pluto a Dwarf Planet?", options: ["It's too far", "It hasn't cleared its orbit", "It has no moon", "It's made of ice"], correct: "It hasn't cleared its orbit", explanation: "To be a planet, you must dominate your orbital path. Pluto shares it.", visualRef: 'space' },
+            { unit: "Space", q: "The Sun produces energy via:", options: ["Burning Coal", "Nuclear Fission", "Nuclear Fusion", "Chemical Fire"], correct: "Nuclear Fusion", explanation: "Hydrogen atoms fuse together to form Helium, releasing massive energy.", visualRef: 'space' },
+            { unit: "Space", q: "A Solar Eclipse happens when:", options: ["Moon blocks Sun", "Earth blocks Sun", "Sun blocks Moon", "Mars blocks Sun"], correct: "Moon blocks Sun", explanation: "The Moon gets between Earth and Sun, casting a shadow on Earth.", visualRef: 'space' },
+            { unit: "Space", q: "A Lunar Eclipse happens when:", options: ["Moon blocks Sun", "Earth blocks Sun", "Sun blocks Moon", "Full Moon blocks Earth"], correct: "Earth blocks Sun", explanation: "Earth gets between Sun and Moon, casting a shadow on the Moon.", visualRef: 'space' },
+            { unit: "Space", q: "Waxing Moon means:", options: ["Light is growing", "Light is shrinking", "Moon is full", "Moon is invisible"], correct: "Light is growing", explanation: "Waxing = Growing (Right side lit). Waning = Shrinking.", visualRef: 'space' },
 
-            // --- SAFETY & GENERAL ---
-            { unit: "General", q: "Why must students follow lab instructions exactly?", options: ["Finish faster", "Avoid losing marks", "Reduce accident risk", "Impress teacher"], correct: "Reduce accident risk", explanation: "Safety is priority #1. Unplanned reactions can be dangerous.", visualRef: 'method' },
-            { unit: "General", q: "What is the immediate step after completing a lab?", options: ["Leave immediately", "Dispose & Wash hands", "Remove goggles first", "Pour in sink"], correct: "Dispose & Wash hands", explanation: "Always clean up chemicals safely and wash hands to remove residues.", visualRef: 'method' }
+            // --- ELECTRICITY ---
+            { unit: "Electricity", q: "Voltage is:", options: ["Flow of electrons", "Electrical Pressure", "Restriction of flow", "Power"], correct: "Electrical Pressure", explanation: "Think of Voltage as the 'push' moving the electrons.", visualRef: 'ohm' },
+            { unit: "Electricity", q: "Current (Amps) is:", options: ["Flow of electrons", "Pressure", "Resistance", "Battery life"], correct: "Flow of electrons", explanation: "Think of Current as the amount of water flowing in a river.", visualRef: 'ohm' },
+            { unit: "Electricity", q: "Resistance is measured in:", options: ["Volts (V)", "Amps (A)", "Ohms (Ω)", "Joules (J)"], correct: "Ohms (Ω)", explanation: "Resistance restricts the flow of electricity.", visualRef: 'ohm' },
+            { unit: "Electricity", q: "In a Series circuit:", options: ["There is only 1 path", "There are multiple paths", "If one breaks, others stay on", "Voltage is the same everywhere"], correct: "There is only 1 path", explanation: "If the path breaks anywhere, the whole circuit stops.", visualRef: 'circuit' },
+            { unit: "Electricity", q: "In a Parallel circuit:", options: ["There is only 1 path", "Current splits into branches", "If one breaks, all stop", "It uses less wire"], correct: "Current splits into branches", explanation: "If one branch breaks, electricity flows through the others.", visualRef: 'circuit' },
+            { unit: "Electricity", q: "Solve: V=12V, R=4Ω. Find Current (I).", options: ["48 A", "3 A", "16 A", "8 A"], correct: "3 A", explanation: "I = V / R. 12 / 4 = 3.", visualRef: 'ohm' },
+            { unit: "Electricity", q: "Solve: I=5A, R=10Ω. Find Voltage (V).", options: ["2 V", "50 V", "15 V", "0.5 V"], correct: "50 V", explanation: "V = I × R. 5 × 10 = 50.", visualRef: 'ohm' }
         ];
-
-        const moons = [
-            { name: "New Moon", fill: 0, desc: "0% light" },
-            { name: "Waxing Crescent", fill: 0.2, desc: "Gaining light (Right)" },
-            { name: "First Quarter", fill: 0.5, desc: "50% lit (Right)" },
-            { name: "Waxing Gibbous", fill: 0.8, desc: "75% lit (Right)" },
-            { name: "Full Moon", fill: 1.0, desc: "100% lit" },
-            { name: "Waning Gibbous", fill: 0.8, desc: "75% lit (Losing light)" },
-            { name: "Third Quarter", fill: 0.5, desc: "50% lit (Losing light)" },
-            { name: "Waning Crescent", fill: 0.2, desc: "25% lit (Losing light)" }
-        ];
-
-        // --- UI LOGIC ---
-        function toggleModal(id) {
-            const modal = document.getElementById(id);
-            modal.classList.toggle('opacity-0');
-            modal.classList.toggle('invisible');
-            modal.classList.toggle('show');
-        }
-
-        function showUnit(id) {
-            document.querySelectorAll('.unit-section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(`unit-${id}`).classList.remove('hidden');
-            document.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(`btn-${id}`).classList.add('active');
-            lucide.createIcons();
-        }
-
-        function showCurrentHint() {
-            if (currentQ && currentQ.visualRef && VISUAL_ASSETS[currentQ.visualRef]) {
-                document.getElementById('hint-content').innerHTML = VISUAL_ASSETS[currentQ.visualRef];
-                toggleModal('hint-modal');
-                // Re-init icons inside modal
-                setTimeout(() => lucide.createIcons(), 100);
-            }
-        }
 
         // --- GAME LOGIC ---
         let qIdx = 0;
@@ -482,15 +508,16 @@
         let currentQ = {};
 
         function loadQuestion() {
-            currentQ = scienceQuestions[qIdx];
+            // Cycle through questions or pick random if preferred. Using random for "Game" feel.
+            currentQ = scienceQuestions[Math.floor(Math.random() * scienceQuestions.length)];
             const theme = THEMES[currentQ.unit] || THEMES['General'];
             
             // Update Visuals
             document.documentElement.style.setProperty('--current-glow', theme.color);
-            document.getElementById('unit-icon').innerText = theme.icon;
+            document.getElementById('unit-icon').innerHTML = `<i data-lucide="${theme.icon}"></i>`;
             document.getElementById('unit-badge').innerText = currentQ.unit;
             document.getElementById('question-text').innerText = currentQ.q;
-            document.getElementById('question-count').innerText = `Q: ${qIdx + 1}/${scienceQuestions.length}`;
+            document.getElementById('question-count').innerText = `Q: ${qIdx + 1}`;
             
             // Hint Button Logic
             const hintBtn = document.getElementById('game-hint-btn');
@@ -508,13 +535,17 @@
             grid.innerHTML = '';
 
             // Generate Buttons
-            currentQ.options.forEach(opt => {
+            let opts = [...currentQ.options];
+            opts.sort(() => Math.random() - 0.5); // Shuffle options
+
+            opts.forEach(opt => {
                 const b = document.createElement('button');
                 b.className = "option-btn p-5 rounded-xl text-left font-bold text-lg w-full flex items-center justify-between group";
                 b.innerHTML = `<span>${opt}</span><span class="opacity-0 group-hover:opacity-100 transition">👉</span>`;
                 b.onclick = () => checkQuestion(opt, b, theme.color);
                 grid.appendChild(b);
             });
+            lucide.createIcons();
         }
 
         function checkQuestion(choice, btn, color) {
@@ -542,10 +573,6 @@
                 document.getElementById('feedback-title').innerText = "SYSTEMS NOMINAL: CORRECT";
                 document.getElementById('feedback-title').className = "text-xl font-black mb-1 text-emerald-300";
                 document.getElementById('feedback-icon').innerText = "✅";
-                
-                // Update Progress
-                const pct = ((qIdx + 1) / scienceQuestions.length) * 100;
-                document.getElementById('progress-bar').style.width = pct + "%";
                 document.getElementById('score-display').innerText = "XP: " + score;
             } else {
                 document.getElementById('game-card').classList.add('anim-shake');
@@ -557,10 +584,14 @@
                 document.getElementById('feedback-icon').innerText = "❌";
             }
             document.getElementById('explanation-text').innerText = currentQ.explanation;
+            
+            // Update Progress Bar
+            let progress = Math.min((score / 2000) * 100, 100); // Goal 2000xp
+            document.getElementById('progress-bar').style.width = progress + "%";
         }
 
         function nextQuestion() {
-            qIdx = (qIdx + 1) % scienceQuestions.length;
+            qIdx++;
             loadQuestion();
         }
 

@@ -140,7 +140,7 @@
         <!-- Navigation -->
         <div class="flex flex-wrap justify-center gap-4 mb-12">
             <button onclick="showUnit('review')" id="btn-review" class="unit-btn active flex items-center gap-2 px-8 py-4 rounded-2xl font-black bg-white text-slate-600 shadow-md border border-slate-200 transition-all uppercase text-sm">
-                <i data-lucide="gamepad-2"></i> Sprint
+                <i data-lucide="clipboard-check"></i> Exam Simulator
             </button>
             <button onclick="showUnit('formulas')" id="btn-formulas" class="unit-btn flex items-center gap-2 px-8 py-4 rounded-2xl font-black bg-white text-slate-600 shadow-md border border-slate-200 transition-all uppercase text-sm">
                 <i data-lucide="triangle"></i> Triangles
@@ -150,12 +150,12 @@
             </button>
         </div>
 
-        <!-- Section 1: Concept Sprint -->
+        <!-- Section 1: Exam Simulator (Based on IMG_0209) -->
         <section id="unit-review" class="unit-section">
             <div class="glass-card rounded-3xl p-10 shadow-xl border-b-[12px] border-indigo-500">
                 <div class="flex justify-between items-center mb-10">
                     <h2 class="text-3xl font-black flex items-center gap-3 text-indigo-900">
-                        RECALL SPRINT
+                        PRACTICE EXAM
                     </h2>
                     <div class="bg-indigo-50 px-6 py-2 rounded-2xl border border-indigo-100 flex items-center gap-3">
                         <span id="score-display" class="text-4xl font-black text-indigo-600">0</span>
@@ -166,6 +166,7 @@
                 <div id="game-container" class="space-y-8">
                     <div id="question-area" class="min-h-[250px]">
                         <div class="bg-slate-50 p-8 rounded-3xl mb-8 border border-slate-200">
+                            <span class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2 block" id="question-number">Question 1</span>
                             <p id="question-text" class="text-2xl font-bold leading-tight text-slate-800"></p>
                         </div>
                         <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
@@ -278,49 +279,61 @@
     </main>
 
     <script>
-        // --- DATA ---
+        // --- DATA FROM EXAM SHEET (IMG_0209) ---
         const scienceQuestions = [
             {
-                q: "Helium has an atomic number of 2 and an atomic mass of 4. How many NEUTRONS does it have?",
-                options: ["2", "4", "6", "0"],
-                correct: "2",
-                explanation: "Neutrons = Atomic Mass (4) - Atomic Number (2). Result is 2."
+                q: "Why must students follow lab instructions exactly as written?",
+                options: ["To finish the lab faster", "To avoid losing marks", "To reduce the risk of accidents", "To impress the teacher"],
+                correct: "To reduce the risk of accidents",
+                explanation: "Safety is the #1 priority in science. Deviating from instructions can cause dangerous chemical reactions or physical injuries."
             },
             {
-                q: "A bee drinks nectar from a flower and spreads its pollen. What type of relationship is this?",
-                options: ["Commensalism", "Mutualism", "Parasitism", "Predation"],
-                correct: "Mutualism",
-                explanation: "Both benefit (+/+). The bee gets food, and the flower gets to reproduce!"
+                q: "What should you do after completing a lab?",
+                options: ["Leave the lab station immediately", "Dispose of materials properly and wash hands", "Remove goggles before cleaning up", "Pour leftover chemicals down the sink"],
+                correct: "Dispose of materials properly and wash hands",
+                explanation: "Always wash off any potential chemical residues and ensure waste goes into the correct disposal container, not just the sink!"
             },
             {
-                q: "Which property describes a metal's ability to be stretched into a thin wire?",
-                options: ["Malleability", "Ductility", "Viscosity", "Hardness"],
-                correct: "Ductility",
-                explanation: "Ductility is the ability to handle tensile (stretching) force. Malleability is about compression (hammering into sheets)."
+                q: "A piece of copper wire is malleable and ductile. These are examples of:",
+                options: ["Physical changes", "Chemical changes", "Physical properties", "Chemical properties"],
+                correct: "Physical properties",
+                explanation: "These describe the substance itself without it changing into something new. Malleable means 'bendable' and Ductile means 'stretchable into wire'."
             },
             {
-                q: "Which planets are Jovian (Gas Giants) and found in the outer solar system?",
-                options: ["Mercury & Venus", "Jupiter & Saturn", "Earth & Mars", "Pluto & Ceres"],
-                correct: "Jupiter & Saturn",
-                explanation: "Jovian planets are much larger, made of gas, and located beyond the asteroid belt."
+                q: "A solid metal block has a mass of 360 g and a volume of 45 cm³. What is its density?",
+                options: ["0.125 g/cm³", "8.0 g/cm³", "405 g/cm³", "16 g/cm³"],
+                correct: "8.0 g/cm³",
+                explanation: "Density = Mass ÷ Volume. 360 ÷ 45 = 8.0."
             },
             {
-                q: "In the Carbon Cycle, what is the name of the process where plants convert CO2 into energy and release Oxygen?",
-                options: ["Respiration", "Fossilization", "Photosynthesis", "Combustion"],
-                correct: "Photosynthesis",
-                explanation: "Plants use sunlight and CO2 to create glucose (energy) and release Oxygen as a byproduct."
+                q: "Which of the following is an example of a chemical change?",
+                options: ["Ice cubes melt into water", "Metal on a car rusts over time", "A glass bottle falls and shatters", "Kool-Aid crystals dissolve in water"],
+                correct: "Metal on a car rusts over time",
+                explanation: "Rust (Iron Oxide) is a new substance formed from Iron and Oxygen. Melting, shattering, and dissolving are physical changes."
             },
             {
-                q: "If you have a circuit with 12 Volts and a resistance of 4 Ohms, what is the Current (Amps)?",
-                options: ["48 Amps", "3 Amps", "8 Amps", "16 Amps"],
-                correct: "3 Amps",
-                explanation: "Using the triangle: I = V / R. 12 / 4 = 3 Amps."
+                q: "Dry ice changes from a solid to a gas at -79°C. What is the change of state it undergoes?",
+                options: ["Melting", "Boiling", "Sublimation", "Deposition"],
+                correct: "Sublimation",
+                explanation: "Sublimation is the direct jump from Solid to Gas, skipping the liquid phase."
             },
             {
-                q: "When a gas turns directly into a solid (skipping the liquid phase), it is called:",
-                options: ["Sublimation", "Deposition", "Condensation", "Freezing"],
-                correct: "Deposition",
-                explanation: "Deposition is Gas to Solid. Sublimation is the opposite (Solid to Gas)."
+                q: "Copper melts at 1084°C, and boils at 2560°C. At what temperature does copper freeze?",
+                options: ["0°C", "100°C", "1084°C", "2560°C"],
+                correct: "1084°C",
+                explanation: "The Melting Point and Freezing Point are the exact same temperature! It just depends on whether you are adding or removing heat."
+            },
+            {
+                q: "When two or more different elements combine chemically, they form:",
+                options: ["An atom", "An element", "A solution", "A compound"],
+                correct: "A compound",
+                explanation: "A compound (like H2O) involves two different elements bonded together. An element is just one type of atom."
+            },
+            {
+                q: "Which of the following mixtures is homogeneous?",
+                options: ["Sugar dissolved in water", "Chocolate chip cookie dough", "Pizza with toppings", "Salad dressing with oil and vinegar"],
+                correct: "Sugar dissolved in water",
+                explanation: "Homogeneous means 'same throughout'. Once sugar dissolves, you can't distinguish it from the water."
             }
         ];
 
@@ -382,6 +395,7 @@
 
         function loadQuestion() {
             const data = scienceQuestions[qIdx];
+            document.getElementById('question-number').innerText = `Question ${qIdx + 11}`; // Starting from 11 as per worksheet
             document.getElementById('question-text').innerText = data.q;
             const grid = document.getElementById('options-grid');
             grid.innerHTML = '';
@@ -400,14 +414,14 @@
             const area = document.getElementById('feedback-area');
             area.classList.remove('hidden');
             if (choice === data.correct) {
-                score += 20;
+                score += 10;
                 area.className = "p-8 rounded-3xl border-4 bg-emerald-50 border-emerald-400 text-emerald-900";
-                document.getElementById('feedback-text').innerText = "SYSTEMS NOMINAL: CORRECT";
+                document.getElementById('feedback-text').innerText = "CORRECT";
                 document.getElementById('feedback-icon').className = "p-4 rounded-full bg-emerald-500 text-white shadow-lg";
                 document.getElementById('feedback-icon').innerHTML = '<i data-lucide="check"></i>';
             } else {
                 area.className = "p-8 rounded-3xl border-4 bg-rose-50 border-rose-400 text-rose-900";
-                document.getElementById('feedback-text').innerText = "ERROR DETECTED";
+                document.getElementById('feedback-text').innerText = "INCORRECT";
                 document.getElementById('feedback-icon').className = "p-4 rounded-full bg-rose-500 text-white shadow-lg";
                 document.getElementById('feedback-icon').innerHTML = '<i data-lucide="x"></i>';
             }

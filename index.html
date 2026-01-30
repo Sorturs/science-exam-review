@@ -8,12 +8,71 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        
+        :root {
+            --chem-color: #00f2ff;
+            --bio-color: #00ff88;
+            --space-color: #bd00ff;
+            --elec-color: #ffaa00;
+            --gen-color: #ffffff;
+            --current-glow: var(--chem-color);
+        }
+
         body { font-family: 'Inter', sans-serif; transition: background-color 0.3s; }
+        
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(229, 231, 235, 1);
         }
+
+        /* --- GAME MODE STYLES --- */
+        .game-container {
+            background-color: #1e1e24;
+            color: white;
+            border-radius: 24px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5), 0 0 0 2px var(--current-glow);
+            transition: box-shadow 0.4s ease, border-color 0.4s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .option-btn {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            color: #ddd;
+            transition: all 0.2s;
+        }
+        .option-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.4);
+            transform: translateX(5px);
+        }
+        .option-btn:disabled { cursor: not-allowed; }
+
+        .progress-fill {
+            background: var(--current-glow);
+            box-shadow: 0 0 10px var(--current-glow);
+            transition: width 0.5s ease, background 0.4s ease;
+        }
+
+        .unit-badge {
+            border: 1px solid var(--current-glow);
+            color: var(--current-glow);
+            background: rgba(255,255,255,0.05);
+            text-shadow: 0 0 5px var(--current-glow);
+        }
+
+        /* Animations */
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
+        
+        .anim-slide { animation: slideDown 0.4s ease-out; }
+        .anim-pop { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .anim-shake { animation: shake 0.4s ease-in-out; }
+
+        /* Existing Styles */
         .unit-btn.active {
             background-color: #4f46e5;
             color: white;
@@ -22,16 +81,9 @@
         .state-node { transition: all 0.3s ease; }
         .state-node:hover { transform: scale(1.1); }
         
-        #cheat-sheet-modal {
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .modal-content {
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-        }
-        #cheat-sheet-modal.show .modal-content {
-            transform: translateY(0);
-        }
+        #cheat-sheet-modal { transition: opacity 0.3s ease, visibility 0.3s ease; }
+        #cheat-sheet-modal.show .modal-content { transform: translateY(0); }
+        .modal-content { transform: translateY(20px); transition: transform 0.3s ease; }
         .formula-triangle text { font-family: 'Inter', sans-serif; font-weight: 900; }
     </style>
 </head>
@@ -62,8 +114,7 @@
                         <p><strong>5. Conclusion:</strong> Your final answer.</p>
                     </div>
                 </div>
-
-                <!-- Chemistry Properties -->
+                <!-- Chemistry -->
                 <div class="space-y-3">
                     <h3 class="font-black text-rose-600 border-b-2 border-rose-100 pb-1 uppercase text-xs">Chemistry: Properties</h3>
                     <div class="text-[13px] leading-relaxed">
@@ -74,7 +125,6 @@
                         <p><strong>Homogeneous:</strong> Even distribution (Salt Water).</p>
                     </div>
                 </div>
-
                 <!-- Atomic Structure -->
                 <div class="space-y-3">
                     <h3 class="font-black text-sky-600 border-b-2 border-sky-100 pb-1 uppercase text-xs">Atomic Structure</h3>
@@ -82,47 +132,36 @@
                         <p><strong>Protons:</strong> Equals Atomic Number.</p>
                         <p><strong>Electrons:</strong> Equals Atomic Number.</p>
                         <p><strong>Neutrons:</strong> Mass Number - Atomic Number.</p>
-                        <p><strong>Valence:</strong> Electrons on the outermost shell.</p>
-                        <p><strong>Metals:</strong> Left of the stairs.</p>
                     </div>
                 </div>
-
-                <!-- Ecology Interactions -->
+                <!-- Ecology -->
                 <div class="space-y-3">
                     <h3 class="font-black text-emerald-600 border-b-2 border-emerald-100 pb-1 uppercase text-xs">Ecology & Symbiosis</h3>
                     <div class="text-[13px] leading-relaxed">
                         <p><strong>Mutualism:</strong> Both benefit (+/+).</p>
                         <p><strong>Commensalism:</strong> One benefits, one neutral (+/0).</p>
                         <p><strong>Parasitism:</strong> One benefits, one harmed (+/-).</p>
-                        <p><strong>Biomagnification:</strong> Toxin buildup across trophic levels.</p>
                         <p><strong>Photosynthesis:</strong> Sunlight + CO2 -> Oxygen.</p>
                     </div>
                 </div>
-
-                <!-- Space Systems -->
+                <!-- Space -->
                 <div class="space-y-3">
                     <h3 class="font-black text-amber-600 border-b-2 border-amber-100 pb-1 uppercase text-xs">Space Unit</h3>
                     <div class="text-[13px] leading-relaxed">
-                        <p><strong>Terrestrial Planets:</strong> Rocky (Earth, Mars, etc).</p>
-                        <p><strong>Jovian Planets:</strong> Gas Giants (Jupiter, Saturn, etc).</p>
-                        <p><strong>Nuclear Fusion:</strong> Hydrogen to Helium in the Sun's core.</p>
-                        <p><strong>AU:</strong> Distance from Earth to Sun (150m km).</p>
+                        <p><strong>Terrestrial Planets:</strong> Rocky (Earth, Mars).</p>
+                        <p><strong>Jovian Planets:</strong> Gas Giants (Jupiter, Saturn).</p>
+                        <p><strong>Nuclear Fusion:</strong> Hydrogen to Helium (Sun's energy).</p>
                     </div>
                 </div>
-
-                <!-- Electricity Symbols -->
+                <!-- Electricity -->
                 <div class="space-y-3">
                     <h3 class="font-black text-slate-600 border-b-2 border-slate-100 pb-1 uppercase text-xs">Electricity</h3>
                     <div class="text-[13px] leading-relaxed">
-                        <p><strong>Voltage:</strong> Energy pressure.</p>
-                        <p><strong>Amps:</strong> Energy flow.</p>
-                        <p><strong>Series:</strong> Connected end-to-end (one path).</p>
-                        <p><strong>Parallel:</strong> Multiple paths for electricity.</p>
+                        <p><strong>Voltage (V):</strong> Energy pressure.</p>
+                        <p><strong>Amps (I):</strong> Energy flow.</p>
+                        <p><strong>Resistance (R):</strong> Flow restriction.</p>
                     </div>
                 </div>
-            </div>
-            <div class="p-4 bg-indigo-900 text-white text-center font-bold text-xs">
-                Reference Guide • Grade 9 Science Curriculum Review
             </div>
         </div>
     </div>
@@ -140,7 +179,7 @@
         <!-- Navigation -->
         <div class="flex flex-wrap justify-center gap-4 mb-12">
             <button onclick="showUnit('review')" id="btn-review" class="unit-btn active flex items-center gap-2 px-8 py-4 rounded-2xl font-black bg-white text-slate-600 shadow-md border border-slate-200 transition-all uppercase text-sm">
-                <i data-lucide="clipboard-check"></i> Exam Simulator
+                <i data-lucide="gamepad-2"></i> Exam Simulator
             </button>
             <button onclick="showUnit('formulas')" id="btn-formulas" class="unit-btn flex items-center gap-2 px-8 py-4 rounded-2xl font-black bg-white text-slate-600 shadow-md border border-slate-200 transition-all uppercase text-sm">
                 <i data-lucide="triangle"></i> Triangles
@@ -150,56 +189,62 @@
             </button>
         </div>
 
-        <!-- Section 1: Exam Simulator (Based on IMG_0209) -->
+        <!-- Section 1: EXAM GAME SIMULATOR -->
         <section id="unit-review" class="unit-section">
-            <div class="glass-card rounded-3xl p-10 shadow-xl border-b-[12px] border-indigo-500">
-                <div class="flex justify-between items-center mb-10">
-                    <h2 class="text-3xl font-black flex items-center gap-3 text-indigo-900">
-                        PRACTICE EXAM
-                    </h2>
-                    <div class="bg-indigo-50 px-6 py-2 rounded-2xl border border-indigo-100 flex items-center gap-3">
-                        <span id="score-display" class="text-4xl font-black text-indigo-600">0</span>
-                        <span class="text-[10px] font-black text-slate-400 uppercase leading-none">Pts</span>
+            <div id="game-card" class="game-container p-8 md:p-10">
+                
+                <!-- HUD -->
+                <div class="flex justify-between items-center mb-6 text-slate-400 font-bold text-sm">
+                    <div class="flex items-center gap-2">
+                        <span id="question-count">Q: 1/12</span>
+                    </div>
+                    <div class="bg-black/30 px-4 py-1 rounded-full border border-white/10 text-white">
+                        <span id="score-display">XP: 0</span>
                     </div>
                 </div>
-                
-                <div id="game-container" class="space-y-8">
-                    <div id="question-area" class="min-h-[250px]">
-                        <div class="bg-slate-50 p-8 rounded-3xl mb-8 border border-slate-200">
-                            <span class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2 block" id="question-number">Question 1</span>
-                            <p id="question-text" class="text-2xl font-bold leading-tight text-slate-800"></p>
-                        </div>
-                        <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+
+                <!-- Progress Bar -->
+                <div class="w-full h-2 bg-black/40 rounded-full mb-8 overflow-hidden">
+                    <div id="progress-bar" class="progress-fill h-full w-0"></div>
+                </div>
+
+                <!-- Game Content -->
+                <div id="game-content" class="anim-slide">
+                    <div class="text-center mb-8">
+                        <div id="unit-icon" class="text-6xl mb-4 filter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] transition-transform hover:scale-110 duration-300 inline-block">❓</div>
+                        <br>
+                        <span id="unit-badge" class="unit-badge px-3 py-1 rounded-full text-[10px] uppercase font-black tracking-widest inline-block mb-4">GENERAL</span>
+                        <h2 id="question-text" class="text-2xl md:text-3xl font-bold leading-tight text-white">Loading Question...</h2>
                     </div>
 
-                    <div id="feedback-area" class="hidden p-8 rounded-3xl border-4 transition-all animate-in fade-in slide-in-from-bottom-4">
-                        <div class="flex items-start gap-6">
-                            <div id="feedback-icon" class="p-4 rounded-full text-white shadow-lg"></div>
+                    <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Buttons injected here -->
+                    </div>
+
+                    <!-- Feedback Overlay -->
+                    <div id="feedback-area" class="hidden mt-6 p-6 rounded-xl border-l-4 bg-black/30 anim-pop text-left">
+                        <div class="flex items-start gap-4">
+                            <div id="feedback-icon" class="text-2xl"></div>
                             <div>
-                                <p id="feedback-text" class="text-2xl font-black mb-1"></p>
-                                <p id="explanation-text" class="text-slate-700 font-medium text-lg leading-snug"></p>
-                                <button onclick="nextQuestion()" class="mt-8 bg-slate-900 text-white px-10 py-4 rounded-2xl font-black hover:bg-slate-800 transition shadow-xl flex items-center gap-3 uppercase text-sm tracking-widest">
-                                    Next Question <i data-lucide="arrow-right"></i>
-                                </button>
+                                <p id="feedback-title" class="text-xl font-black mb-1"></p>
+                                <p id="explanation-text" class="text-slate-300 leading-relaxed"></p>
                             </div>
                         </div>
+                        <button onclick="nextQuestion()" id="next-btn" class="mt-6 w-full bg-white text-black py-4 rounded-xl font-black uppercase tracking-widest hover:bg-slate-200 hover:scale-[1.02] transition-all shadow-lg">Next Level &rarr;</button>
                     </div>
                 </div>
+
             </div>
         </section>
 
         <!-- Section 2: Interactive Triangles -->
         <section id="unit-formulas" class="unit-section hidden">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                
                 <!-- Ohm's Law -->
                 <div class="glass-card rounded-3xl p-10 shadow-xl border-t-8 border-yellow-400">
-                    <div class="flex items-center justify-between mb-8">
-                        <h3 class="text-2xl font-black text-yellow-900">OHM'S LAW</h3>
-                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-700"><i data-lucide="zap"></i></div>
-                    </div>
+                    <h3 class="text-2xl font-black text-yellow-900 mb-6">OHM'S LAW</h3>
                     <div class="flex flex-col items-center">
-                        <svg viewBox="0 0 100 87" class="w-64 h-56 mb-10 drop-shadow-2xl formula-triangle">
+                        <svg viewBox="0 0 100 87" class="w-64 h-56 mb-8 drop-shadow-2xl formula-triangle">
                             <path d="M50 0 L100 87 L0 87 Z" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
                             <line x1="0" y1="43.5" x2="100" y2="43.5" stroke="#eab308" stroke-width="2"/>
                             <line x1="50" y1="43.5" x2="50" y2="87" stroke="#eab308" stroke-width="2"/>
@@ -208,23 +253,19 @@
                             <text x="75" y="70" text-anchor="middle" class="fill-yellow-800 text-[10px]">R</text>
                         </svg>
                         <div class="grid grid-cols-3 gap-4 w-full mb-6">
-                            <div class="text-center"><label class="text-[10px] font-black text-yellow-600 block mb-1">VOLTS</label><input type="number" id="ohm-v" class="w-full border-2 border-yellow-100 rounded-xl p-3 text-center focus:border-yellow-400 outline-none font-bold" placeholder="V"></div>
-                            <div class="text-center"><label class="text-[10px] font-black text-yellow-600 block mb-1">AMPS</label><input type="number" id="ohm-i" class="w-full border-2 border-yellow-100 rounded-xl p-3 text-center focus:border-yellow-400 outline-none font-bold" placeholder="I"></div>
-                            <div class="text-center"><label class="text-[10px] font-black text-yellow-600 block mb-1">OHMS</label><input type="number" id="ohm-r" class="w-full border-2 border-yellow-100 rounded-xl p-3 text-center focus:border-yellow-400 outline-none font-bold" placeholder="R"></div>
+                            <input type="number" id="ohm-v" class="border-2 border-yellow-100 rounded-xl p-3 text-center focus:border-yellow-400 outline-none font-bold" placeholder="V">
+                            <input type="number" id="ohm-i" class="border-2 border-yellow-100 rounded-xl p-3 text-center focus:border-yellow-400 outline-none font-bold" placeholder="I">
+                            <input type="number" id="ohm-r" class="border-2 border-yellow-100 rounded-xl p-3 text-center focus:border-yellow-400 outline-none font-bold" placeholder="R">
                         </div>
-                        <button onclick="calculateOhm()" class="w-full bg-yellow-400 text-yellow-950 font-black py-5 rounded-2xl hover:bg-yellow-300 shadow-lg transition uppercase tracking-widest">Execute Solve</button>
-                        <div id="ohm-result" class="mt-8 w-full p-6 bg-yellow-50 rounded-3xl text-center font-bold text-yellow-900 hidden border border-yellow-100 animate-in fade-in zoom-in"></div>
+                        <button onclick="calculateOhm()" class="w-full bg-yellow-400 text-yellow-950 font-black py-4 rounded-xl hover:bg-yellow-300 transition uppercase tracking-widest">Execute Solve</button>
+                        <div id="ohm-result" class="mt-6 p-4 bg-yellow-50 rounded-xl text-center font-bold text-yellow-900 hidden border border-yellow-100"></div>
                     </div>
                 </div>
-
                 <!-- Density -->
                 <div class="glass-card rounded-3xl p-10 shadow-xl border-t-8 border-blue-400">
-                    <div class="flex items-center justify-between mb-8">
-                        <h3 class="text-2xl font-black text-blue-900">DENSITY SYSTEM</h3>
-                        <div class="bg-blue-100 p-2 rounded-lg text-blue-700"><i data-lucide="box"></i></div>
-                    </div>
+                    <h3 class="text-2xl font-black text-blue-900 mb-6">DENSITY SYSTEM</h3>
                     <div class="flex flex-col items-center">
-                        <svg viewBox="0 0 100 87" class="w-64 h-56 mb-10 drop-shadow-2xl formula-triangle">
+                        <svg viewBox="0 0 100 87" class="w-64 h-56 mb-8 drop-shadow-2xl formula-triangle">
                             <path d="M50 0 L100 87 L0 87 Z" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
                             <line x1="0" y1="43.5" x2="100" y2="43.5" stroke="#3b82f6" stroke-width="2"/>
                             <line x1="50" y1="43.5" x2="50" y2="87" stroke="#3b82f6" stroke-width="2"/>
@@ -233,12 +274,12 @@
                             <text x="75" y="70" text-anchor="middle" class="fill-blue-800 text-[10px]">V</text>
                         </svg>
                         <div class="grid grid-cols-3 gap-4 w-full mb-6">
-                            <div class="text-center"><label class="text-[10px] font-black text-blue-600 block mb-1">MASS</label><input type="number" id="den-m" class="w-full border-2 border-blue-100 rounded-xl p-3 text-center focus:border-blue-400 outline-none font-bold" placeholder="M"></div>
-                            <div class="text-center"><label class="text-[10px] font-black text-blue-600 block mb-1">DENSITY</label><input type="number" id="den-d" class="w-full border-2 border-blue-100 rounded-xl p-3 text-center focus:border-blue-400 outline-none font-bold" placeholder="D"></div>
-                            <div class="text-center"><label class="text-[10px] font-black text-blue-600 block mb-1">VOLUME</label><input type="number" id="den-v" class="w-full border-2 border-blue-100 rounded-xl p-3 text-center focus:border-blue-400 outline-none font-bold" placeholder="V"></div>
+                            <input type="number" id="den-m" class="border-2 border-blue-100 rounded-xl p-3 text-center focus:border-blue-400 outline-none font-bold" placeholder="M">
+                            <input type="number" id="den-d" class="border-2 border-blue-100 rounded-xl p-3 text-center focus:border-blue-400 outline-none font-bold" placeholder="D">
+                            <input type="number" id="den-v" class="border-2 border-blue-100 rounded-xl p-3 text-center focus:border-blue-400 outline-none font-bold" placeholder="V">
                         </div>
-                        <button onclick="calculateDensity()" class="w-full bg-blue-600 text-white font-black py-5 rounded-2xl hover:bg-blue-700 shadow-lg transition uppercase tracking-widest">Execute Solve</button>
-                        <div id="den-result" class="mt-8 w-full p-6 bg-blue-50 rounded-3xl text-center font-bold text-blue-900 hidden border border-blue-100 animate-in fade-in zoom-in"></div>
+                        <button onclick="calculateDensity()" class="w-full bg-blue-600 text-white font-black py-4 rounded-xl hover:bg-blue-700 transition uppercase tracking-widest">Execute Solve</button>
+                        <div id="den-result" class="mt-6 p-4 bg-blue-50 rounded-xl text-center font-bold text-blue-900 hidden border border-blue-100"></div>
                     </div>
                 </div>
             </div>
@@ -279,62 +320,32 @@
     </main>
 
     <script>
-        // --- DATA FROM EXAM SHEET (IMG_0209) ---
+        // --- CONFIG & THEMES ---
+        const THEMES = {
+            'Chemistry': { color: '#00f2ff', icon: '🧪' },
+            'Biology': { color: '#00ff88', icon: '🦠' },
+            'Space': { color: '#bd00ff', icon: '🪐' },
+            'Electricity': { color: '#ffaa00', icon: '⚡' },
+            'General': { color: '#ffffff', icon: '📝' }
+        };
+
+        // --- QUESTION BANK (Merged Exam + Variety) ---
         const scienceQuestions = [
-            {
-                q: "Why must students follow lab instructions exactly as written?",
-                options: ["To finish the lab faster", "To avoid losing marks", "To reduce the risk of accidents", "To impress the teacher"],
-                correct: "To reduce the risk of accidents",
-                explanation: "Safety is the #1 priority in science. Deviating from instructions can cause dangerous chemical reactions or physical injuries."
-            },
-            {
-                q: "What should you do after completing a lab?",
-                options: ["Leave the lab station immediately", "Dispose of materials properly and wash hands", "Remove goggles before cleaning up", "Pour leftover chemicals down the sink"],
-                correct: "Dispose of materials properly and wash hands",
-                explanation: "Always wash off any potential chemical residues and ensure waste goes into the correct disposal container, not just the sink!"
-            },
-            {
-                q: "A piece of copper wire is malleable and ductile. These are examples of:",
-                options: ["Physical changes", "Chemical changes", "Physical properties", "Chemical properties"],
-                correct: "Physical properties",
-                explanation: "These describe the substance itself without it changing into something new. Malleable means 'bendable' and Ductile means 'stretchable into wire'."
-            },
-            {
-                q: "A solid metal block has a mass of 360 g and a volume of 45 cm³. What is its density?",
-                options: ["0.125 g/cm³", "8.0 g/cm³", "405 g/cm³", "16 g/cm³"],
-                correct: "8.0 g/cm³",
-                explanation: "Density = Mass ÷ Volume. 360 ÷ 45 = 8.0."
-            },
-            {
-                q: "Which of the following is an example of a chemical change?",
-                options: ["Ice cubes melt into water", "Metal on a car rusts over time", "A glass bottle falls and shatters", "Kool-Aid crystals dissolve in water"],
-                correct: "Metal on a car rusts over time",
-                explanation: "Rust (Iron Oxide) is a new substance formed from Iron and Oxygen. Melting, shattering, and dissolving are physical changes."
-            },
-            {
-                q: "Dry ice changes from a solid to a gas at -79°C. What is the change of state it undergoes?",
-                options: ["Melting", "Boiling", "Sublimation", "Deposition"],
-                correct: "Sublimation",
-                explanation: "Sublimation is the direct jump from Solid to Gas, skipping the liquid phase."
-            },
-            {
-                q: "Copper melts at 1084°C, and boils at 2560°C. At what temperature does copper freeze?",
-                options: ["0°C", "100°C", "1084°C", "2560°C"],
-                correct: "1084°C",
-                explanation: "The Melting Point and Freezing Point are the exact same temperature! It just depends on whether you are adding or removing heat."
-            },
-            {
-                q: "When two or more different elements combine chemically, they form:",
-                options: ["An atom", "An element", "A solution", "A compound"],
-                correct: "A compound",
-                explanation: "A compound (like H2O) involves two different elements bonded together. An element is just one type of atom."
-            },
-            {
-                q: "Which of the following mixtures is homogeneous?",
-                options: ["Sugar dissolved in water", "Chocolate chip cookie dough", "Pizza with toppings", "Salad dressing with oil and vinegar"],
-                correct: "Sugar dissolved in water",
-                explanation: "Homogeneous means 'same throughout'. Once sugar dissolves, you can't distinguish it from the water."
-            }
+            // FROM EXAM IMAGE
+            { unit: "General", q: "Why must students follow lab instructions exactly as written?", options: ["Finish faster", "Avoid losing marks", "Reduce accident risk", "Impress teacher"], correct: "Reduce accident risk", explanation: "Safety is the #1 priority. Deviating causes accidents." },
+            { unit: "General", q: "What is the immediate step after completing a lab?", options: ["Leave immediately", "Dispose & Wash hands", "Remove goggles first", "Pour in sink"], correct: "Dispose & Wash hands", explanation: "Wash off chemical residues and dispose of waste correctly." },
+            { unit: "Chemistry", q: "Copper wire is malleable and ductile. These are:", options: ["Physical changes", "Chemical changes", "Physical properties", "Chemical properties"], correct: "Physical properties", explanation: "They describe the substance's state/ability without changing its identity." },
+            { unit: "Chemistry", q: "Mass = 360g, Volume = 45cm³. Density?", options: ["0.125 g/cm³", "8.0 g/cm³", "405 g/cm³", "16 g/cm³"], correct: "8.0 g/cm³", explanation: "D = M ÷ V. 360 ÷ 45 = 8.0." },
+            { unit: "Chemistry", q: "Example of a Chemical Change?", options: ["Ice melting", "Metal rusting", "Glass shattering", "Sugar dissolving"], correct: "Metal rusting", explanation: "Rust creates a NEW substance (Iron Oxide)." },
+            { unit: "Chemistry", q: "Dry ice turning Solid to Gas directly is:", options: ["Melting", "Boiling", "Sublimation", "Deposition"], correct: "Sublimation", explanation: "Direct jump from Solid to Gas skipping Liquid." },
+            { unit: "Chemistry", q: "Copper melts at 1084°C. At what temp does it freeze?", options: ["0°C", "100°C", "1084°C", "2560°C"], correct: "1084°C", explanation: "Melting and Freezing points are the same temperature." },
+            { unit: "Chemistry", q: "Two different elements combined chemically form a:", options: ["Atom", "Element", "Solution", "Compound"], correct: "Compound", explanation: "Compounds (like H2O) are chemically bonded elements." },
+            { unit: "Chemistry", q: "Which mixture is homogeneous?", options: ["Sugar water", "Cookie dough", "Pizza", "Salad dressing"], correct: "Sugar water", explanation: "Homogeneous means 'same throughout'. Dissolved sugar is invisible." },
+            
+            // VARIETY FROM PREVIOUS TURNS
+            { unit: "Biology", q: "Relationship where both species benefit (+/+):", options: ["Commensalism", "Mutualism", "Parasitism", "Predation"], correct: "Mutualism", explanation: "Both parties gain an advantage (e.g., Bee & Flower)." },
+            { unit: "Space", q: "Which planets are Jovian (Gas Giants)?", options: ["Mercury & Venus", "Jupiter & Saturn", "Earth & Mars", "Pluto & Ceres"], correct: "Jupiter & Saturn", explanation: "Large, gaseous planets in the outer solar system." },
+            { unit: "Electricity", q: "V=12V, R=4Ω. Current (I)?", options: ["48 A", "3 A", "8 A", "16 A"], correct: "3 A", explanation: "I = V ÷ R. 12 ÷ 4 = 3." }
         ];
 
         const moons = [
@@ -364,7 +375,78 @@
             lucide.createIcons();
         }
 
-        // --- CALCULATORS ---
+        // --- GAME LOGIC ---
+        let qIdx = 0;
+        let score = 0;
+        let currentQ = {};
+
+        function loadQuestion() {
+            currentQ = scienceQuestions[qIdx];
+            const theme = THEMES[currentQ.unit] || THEMES['General'];
+            
+            // Update Visuals
+            document.documentElement.style.setProperty('--current-glow', theme.color);
+            document.getElementById('unit-icon').innerText = theme.icon;
+            document.getElementById('unit-badge').innerText = currentQ.unit;
+            document.getElementById('question-text').innerText = currentQ.q;
+            document.getElementById('question-count').innerText = `Q: ${qIdx + 1}/${scienceQuestions.length}`;
+            
+            // Reset State
+            document.getElementById('game-card').classList.remove('anim-shake');
+            document.getElementById('feedback-area').classList.add('hidden');
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+
+            // Generate Buttons
+            currentQ.options.forEach(opt => {
+                const b = document.createElement('button');
+                b.className = "option-btn p-5 rounded-xl text-left font-bold text-lg w-full flex items-center justify-between group";
+                b.innerHTML = `<span>${opt}</span><span class="opacity-0 group-hover:opacity-100 transition">👉</span>`;
+                b.onclick = () => checkQuestion(opt, b, theme.color);
+                grid.appendChild(b);
+            });
+        }
+
+        function checkQuestion(choice, btn, color) {
+            const isCorrect = choice === currentQ.correct;
+            const area = document.getElementById('feedback-area');
+            const options = document.querySelectorAll('.option-btn');
+            
+            options.forEach(b => b.disabled = true);
+            area.classList.remove('hidden');
+
+            if (isCorrect) {
+                score += 100;
+                btn.style.background = "rgba(255,255,255,0.2)";
+                btn.style.borderColor = color;
+                btn.style.boxShadow = `0 0 15px ${color}`;
+                
+                document.getElementById('feedback-title').innerText = "SYSTEMS NOMINAL: CORRECT";
+                document.getElementById('feedback-title').className = "text-xl font-black mb-1 text-emerald-300";
+                document.getElementById('feedback-icon').innerText = "✅";
+                
+                // Update Progress
+                const pct = ((qIdx + 1) / scienceQuestions.length) * 100;
+                document.getElementById('progress-bar').style.width = pct + "%";
+                document.getElementById('score-display').innerText = "XP: " + score;
+            } else {
+                document.getElementById('game-card').classList.add('anim-shake');
+                btn.style.background = "rgba(255,50,50,0.2)";
+                btn.style.borderColor = "#ff4444";
+                
+                document.getElementById('feedback-title').innerText = "ERROR DETECTED";
+                document.getElementById('feedback-title').className = "text-xl font-black mb-1 text-rose-300";
+                document.getElementById('feedback-icon').innerText = "❌";
+            }
+            document.getElementById('explanation-text').innerText = currentQ.explanation;
+        }
+
+        function nextQuestion() {
+            qIdx = (qIdx + 1) % scienceQuestions.length;
+            loadQuestion();
+        }
+
+        // --- CALCULATORS & VISUALS ---
         function calculateOhm() {
             const v = parseFloat(document.getElementById('ohm-v').value);
             const i = parseFloat(document.getElementById('ohm-i').value);
@@ -389,54 +471,6 @@
             else res.innerText = "Error: Input exactly two variables.";
         }
 
-        // --- GAME LOGIC ---
-        let qIdx = 0;
-        let score = 0;
-
-        function loadQuestion() {
-            const data = scienceQuestions[qIdx];
-            document.getElementById('question-number').innerText = `Question ${qIdx + 11}`; // Starting from 11 as per worksheet
-            document.getElementById('question-text').innerText = data.q;
-            const grid = document.getElementById('options-grid');
-            grid.innerHTML = '';
-            document.getElementById('feedback-area').classList.add('hidden');
-            data.options.forEach(opt => {
-                const b = document.createElement('button');
-                b.className = "p-6 text-left border-4 border-slate-200 rounded-3xl hover:border-indigo-500 hover:bg-indigo-50 transition-all font-bold text-xl text-slate-700 shadow-sm";
-                b.innerText = opt;
-                b.onclick = () => checkQuestion(opt);
-                grid.appendChild(b);
-            });
-        }
-
-        function checkQuestion(choice) {
-            const data = scienceQuestions[qIdx];
-            const area = document.getElementById('feedback-area');
-            area.classList.remove('hidden');
-            if (choice === data.correct) {
-                score += 10;
-                area.className = "p-8 rounded-3xl border-4 bg-emerald-50 border-emerald-400 text-emerald-900";
-                document.getElementById('feedback-text').innerText = "CORRECT";
-                document.getElementById('feedback-icon').className = "p-4 rounded-full bg-emerald-500 text-white shadow-lg";
-                document.getElementById('feedback-icon').innerHTML = '<i data-lucide="check"></i>';
-            } else {
-                area.className = "p-8 rounded-3xl border-4 bg-rose-50 border-rose-400 text-rose-900";
-                document.getElementById('feedback-text').innerText = "INCORRECT";
-                document.getElementById('feedback-icon').className = "p-4 rounded-full bg-rose-500 text-white shadow-lg";
-                document.getElementById('feedback-icon').innerHTML = '<i data-lucide="x"></i>';
-            }
-            document.getElementById('explanation-text').innerText = data.explanation;
-            document.getElementById('score-display').innerText = score;
-            document.querySelectorAll('#options-grid button').forEach(b => b.disabled = true);
-            lucide.createIcons();
-        }
-
-        function nextQuestion() {
-            qIdx = (qIdx + 1) % scienceQuestions.length;
-            loadQuestion();
-        }
-
-        // --- VISUAL INTERACTIVES ---
         function showStateInfo(state) {
             const info = document.getElementById('state-info');
             if(state === 'Solid') info.innerHTML = "<strong>SOLID:</strong> Particles very close, vibrating in place. Fixed shape and volume.";
